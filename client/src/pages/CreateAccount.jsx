@@ -1,11 +1,12 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from "react";
 import logo from '../assets/images/logo.png'
 import '../App.css'
 
 function CreateAcc() {
   const userRef = useRef();
+  const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   useEffect(() => {
@@ -21,9 +22,9 @@ function CreateAcc() {
   return (
     <>
       <div>
-        <a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-          <img src={logo} className="logo react" alt="Congregator logo" />
-        </a>
+        <Link to = {"/"}>
+          <img src={logo} className="accountlogo" alt="Congregator logo"/>
+        </Link>
       </div>
       <div className="center">
               <form onSubmit={handleSubmit} className="centerform">
@@ -42,8 +43,22 @@ function CreateAcc() {
                   />
                 </div>
                 <label>
+                    Username: 
+                </label>
+                <div className="center">
+                  <input
+                    type ="text"
+                    name = "username"
+                    ref = {userRef}
+                    autoCapitalize="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    value = {user}
+                    required
+                  />
+                </div>
+                <label>
                     Password: 
-                  </label>
+                </label>
                 <div className="center">
                   <input
                     type ="password"
@@ -54,22 +69,14 @@ function CreateAcc() {
                   />
                 </div>
                 <div className="center">
-                  <p id = "forgotpass" style={{color: "blue", cursor: "pointer"}} onClick={ForgotPassPage}>Forgot Password?</p>
-                </div>
-                <div className="center">
-                  <p id = "errormsg" style={{display: "none", color: "red"}}></p>
+                  <p id = "errormsg"></p>
                 </div>
                 <div className="center">
                   <input
                     className="button"
                     type ="submit"
-                    value = "Login"
+                    value = "Create Account"
                   />
-                </div>
-                <div className='center'>
-                    <button className="button" onClick={createaccountpage} style={{animation: "none"}}>
-                    Create Account
-                    </button>
                 </div>
               </form>
           </div>

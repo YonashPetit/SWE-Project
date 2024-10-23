@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from "react";
 import logo from '../assets/images/logo.png'
 import '../App.css'
@@ -21,9 +21,9 @@ function Login() {
   return (
     <>
       <div>
-        <a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-          <img src={logo} className="logo react" alt="Congregator logo"/>
-        </a>
+        <Link to = {"/"}>
+          <img src={logo} className="accountlogo" alt="Congregator logo"/>
+        </Link>
       </div>
       <div className="center">
               <form onSubmit={handleSubmit} className="centerform">
@@ -40,10 +40,11 @@ function Login() {
                     value = {email}
                     required
                   />
+                  
                 </div>
                 <label>
                     Password: 
-                  </label>
+                </label>
                 <div className="center">
                   <input
                     type ="password"
@@ -54,9 +55,7 @@ function Login() {
                   />
                 </div>
                 <div className="center">
-                  <p id = "forgotpass" style={{color: "blue", cursor: "pointer"}} onClick={ForgotPassPage}>Forgot Password?</p>
-                </div>
-                <div className="center" id = "errorbox" style={{display: "none", color: "red"}}>
+                  <p id = "forgotpass" style={{color: "green", cursor: "pointer"}} onClick={ForgotPassPage}>Forgot Password?</p>
                   <p id = "errormsg"></p>
                 </div>
                 <div className="center">
@@ -65,11 +64,10 @@ function Login() {
                     type ="submit"
                     value = "Login"
                   />
-                </div>
-                <div className='center'>
-                    <button className="button" onClick={createaccountpage} style={{animation: "none"}}>
+                  <div className="space"></div>
+                  <button className="button" onClick={createaccountpage}>
                     Create Account
-                    </button>
+                  </button>
                 </div>
               </form>
           </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from "react";
 import logo from '../assets/images/logo.png'
 import '../App.css'
@@ -7,30 +7,27 @@ import '../App.css'
 function ForgotPass() {
   const userRef = useRef();
   const [email, setEmail] = useState('');
-  const [pwd, setPwd] = useState('');
   useEffect(() => {
     userRef.current.focus();
     }, [])
   const navigate = useNavigate();
   const home = () => navigate('/');
-  const createaccountpage = () =>  navigate('/createaccount');
-  const ForgotPassPage = () => navigate('/forgotpass');
   const handleSubmit = async (e) =>{
     console.log("Logging in!")
   }
   return (
     <>
       <div>
-        <a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-          <img src={logo} className="logo react" alt="Congregator logo" />
-        </a>
+        <Link to = {"/"}>
+          <img src={logo} className="accountlogo" alt="Congregator logo"/>
+        </Link>
       </div>
       <div className="center">
-              <form onSubmit={handleSubmit} className="centerform">
+              <form onSubmit={handleSubmit} className="centerform" style={{marginTop: "30px", marginBottom: "30px"}}>
                 <label>
-                    Email: 
+                    Enter your Account Email to Retrieve your Password: 
                 </label>
-                <div className="center">
+                <div className="center" style={{marginTop: "10px", marginBottom: "10px"}}>
                   <input
                     type ="text"
                     name = "email"
@@ -41,35 +38,13 @@ function ForgotPass() {
                     required
                   />
                 </div>
-                <label>
-                    Password: 
-                  </label>
-                <div className="center">
-                  <input
-                    type ="password"
-                    name = "password"
-                    onChange={(e) => setPwd(e.target.value)}
-                    value = {pwd}
-                    required
-                  />
-                </div>
-                <div className="center">
-                  <p id = "forgotpass" style={{color: "blue", cursor: "pointer"}} onClick={ForgotPassPage}>Forgot Password?</p>
-                </div>
                 <div className="center">
                   <p id = "errormsg" style={{display: "none", color: "red"}}></p>
-                </div>
-                <div className="center">
                   <input
                     className="button"
                     type ="submit"
                     value = "Login"
                   />
-                </div>
-                <div className='center'>
-                    <button className="button" onClick={createaccountpage} style={{animation: "none"}}>
-                    Create Account
-                    </button>
                 </div>
               </form>
           </div>

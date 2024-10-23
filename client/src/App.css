@@ -4,15 +4,26 @@
   padding: 2rem;
   text-align: center;
 }
+.accountlogo{
+  height: 60%;
+  width: 60%;
+  padding-bottom: 15px;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.accountlogo:hover {
+  filter: drop-shadow(0 0 2em green);
+}
 .button{
   background: black;
   color: white;
+  font-size: 15px;
   width: 100%;
   border: 1px solid green;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin: 10px 0;
-  text-align: left;
+  text-align: center;
   border-radius: 10px;
   cursor: pointer;
   transition: filter 300ms;
@@ -28,8 +39,6 @@
   max-width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
-  margin-bottom: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
   text-align: center;
@@ -37,10 +46,19 @@
 .centerform {
   text-align: center;
 }
-.accountlogo{
-  height: 100%;
-  width: 100%;
-  will-change: filter;
+form{
+  padding:0px;
+}
+.formbutton{
+  background: black;
+  color: white;
+  font-size: 15px;
+  border: 1px solid green;
+  padding-left: 50px;
+  padding-right: 50px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
   transition: filter 300ms;
 }
 .logo{
@@ -77,4 +95,9 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.space{
+  margin-left: 10px;
+  margin-right: 10px;
 }
