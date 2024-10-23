@@ -4,10 +4,48 @@
   padding: 2rem;
   text-align: center;
 }
-
-.logo {
-  height: 500px;
-  width: 500px;
+.button{
+  background: black;
+  color: white;
+  width: 100%;
+  border: 1px solid green;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin: 10px 0;
+  text-align: left;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: filter 300ms;
+}
+.button:hover {
+  filter: drop-shadow(0 0 2em green);
+}
+.button.react:hover {
+  filter: drop-shadow(0 0 2em green);
+}
+.center {
+  display: flex;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.centerform {
+  text-align: center;
+}
+.accountlogo{
+  height: 100%;
+  width: 100%;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo{
+  height: 100%;
+  width: 100%;
   will-change: filter;
   transition: filter 300ms;
 }
