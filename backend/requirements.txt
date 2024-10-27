@@ -1,0 +1,4 @@
+fastapi
+uvicorn         # ASGI server to run FastAPI
+pymongo         # MongoDB client
+python-dotenv   # Load environment variables from .env
