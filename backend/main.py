@@ -1,5 +1,3 @@
-# main.py
-
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
@@ -44,3 +42,17 @@ async def create_user(request: Request):
     users_collection.insert_one(user_data)
 
     return {"message": "User created successfully"}
+
+@app.post("/login")
+async def login_user(request: Request):
+    data = await request.json()
+    email = data.get("email")
+    password = data.get("password")
+
+    user = users_collection.find_one({"email": email})
+
+    if not user or user["password"] != password:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    # Placeholder response for successful login
+    return {"message": "Login successful"}

@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import NoPage from "./pages/NoPage";
 import ForgotPass from './pages/ForgotPass';
 import CreateAcc from './pages/CreateAccount';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path = "/login" element = {<Login/>} exact/>
           <Route path = "/createaccount" element = {<CreateAcc/>} exact/>
           <Route path = "/forgotpass" element = {<ForgotPass/>} exact/>
+          <Route path= "/dashboard" element = {<Dashboard />} exact/>
           <Route path = "*" element = {<NoPage/>} exact/>
         </Routes>
         </Router>    
