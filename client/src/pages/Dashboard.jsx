@@ -12,15 +12,10 @@ function Dashboard() {
 
   return (
     <>
-    <div>
-      Heyo
-    </div>
     <div className="dashboard">
-      <h1>Welcome to Your Dashboard!</h1>
-      <p>This is a protected area of the website, accessible only to logged-in users.</p>
-      <button className="button" onClick={handleLogout}>
-        Logout
-      </button>
+      <div className="hdashright"> 
+        Hi
+      </div>
     </div>
     </>
   );
