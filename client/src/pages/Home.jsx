@@ -1,14 +1,17 @@
-import React from 'react'
+import React, {useLayoutEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.png'
 import '../App.css'
 
-function Home() {
+function Home({setShowNavbar}) {
   const navigate = useNavigate();
   const loginPage = () => navigate('/login');
+  useLayoutEffect(() => {
+    setShowNavbar(false);
+  }, [])
   return (
     <>
-      <div className='center'>
+      <div className='center' style={{marginTop: "225px"}}>
         <a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ">
           <img src={logo} className="logo react" alt="Congregator logo"/>
         </a>

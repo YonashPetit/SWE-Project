@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import "../App.css";
 
-function CreateAcc() {
+function CreateAcc({setShowNavbar}) {
   const userRef = useRef();
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
@@ -14,6 +14,10 @@ function CreateAcc() {
   useEffect(() => {
     userRef.current.focus();
   }, []);
+  
+  useLayoutEffect(() => {
+    setShowNavbar(false);
+  }, [])
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
@@ -45,7 +49,7 @@ function CreateAcc() {
 
   return (
     <>
-      <div>
+      <div style={{marginTop: "140px", marginBottom: "40px"}}>
         <Link to="/">
           <img src={logo} className="accountlogo" alt="Congregator logo" />
         </Link>

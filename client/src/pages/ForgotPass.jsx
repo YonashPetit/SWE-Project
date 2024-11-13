@@ -17,7 +17,7 @@ function ForgotPass() {
   }
   return (
     <>
-      <div>
+      <div style={{marginTop: "140px", marginBottom: "40px"}}>
         <Link to = {"/"}>
           <img src={logo} className="accountlogo" alt="Congregator logo"/>
         </Link>

@@ -1,18 +1,21 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+
 .accountlogo{
-  height: 60%;
-  width: 60%;
+  height: 22%;
+  width: 22%;
   padding-bottom: 15px;
   will-change: filter;
   transition: filter 300ms;
 }
 .accountlogo:hover {
   filter: drop-shadow(0 0 2em green);
+}
+.body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: 'Outfit', sans-serif;
 }
 .button{
   background: black;

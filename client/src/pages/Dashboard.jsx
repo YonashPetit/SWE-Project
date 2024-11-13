@@ -11,6 +11,10 @@ function Dashboard() {
   };
 
   return (
+    <>
+    <div>
+      Heyo
+    </div>
     <div className="dashboard">
       <h1>Welcome to Your Dashboard!</h1>
       <p>This is a protected area of the website, accessible only to logged-in users.</p>
@@ -18,6 +22,7 @@ function Dashboard() {
         Logout
       </button>
     </div>
+    </>
   );
 }
 
