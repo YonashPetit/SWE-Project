@@ -1,6 +1,6 @@
 .navbar {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
     align-items: center;
     background-color: #333;
     color: #fff;
@@ -17,8 +17,10 @@
   .navbar-center .nav-links {
     list-style-type: none;
     display: flex;
-    margin: 0;
     padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: -65px;
   }
   
   .navbar-center .nav-links li {
