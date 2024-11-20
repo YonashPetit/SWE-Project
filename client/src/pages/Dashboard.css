@@ -30,6 +30,7 @@
     text-align: center;
     line-height: 75px;
     font-size: 20px;
+    overflow: auto;
 }
 .right{
     background-color: #333;
@@ -38,7 +39,7 @@
     margin-top: 2px;
     margin-left: 3px;
     text-align: center;
-    line-height: 75px;
+    line-height: 60px;
     font-size: 20px;
 }
 .search{
@@ -46,4 +47,19 @@
     margin-left: auto;
     margin-right: auto;
     width: 75%
+}
+.description{
+    margin-left: 70px;
+    margin-right: 70px;
+    line-height: normal;
+}
+.name{
+    margin-top: 70px;
+    font-size: xx-large;
+}
+.host{
+    font-size: x-large;
+}
+.datetime{
+    font-size: larger;
 }

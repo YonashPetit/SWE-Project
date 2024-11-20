@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
-//import ClubList from '../lists/ClubList';
+import ClubList from '../lists/ClubList';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
@@ -9,7 +9,13 @@ import "../pages/Dashboard.css";
 
 function Clubs() {
   const navigate = useNavigate();
-  const [value, setValue] = useState(new Date());
+  const [inputText, setInputText] = useState("");
+
+  let inputhandler = (e) => {
+    var lowerCase = e.target.value.toLowerCase();
+
+    setInputText(lowerCase);
+  };
   // Optional: Logout function that could clear session storage and redirect to login
   const handleLogout = () => {
     // Perform any logout logic here
@@ -26,17 +32,23 @@ function Clubs() {
           <div className='search'>
             <TextField
                 id='outlined-basic'
+                onChange={inputhandler}
                 variant='outlined'
                 color= "success"
                 fullWidth
                 label='search'
-                sx={{ input: { color: 'black' } }}
-                style={{background: "white"}}
+                sx={{ input: { color: 'White' } }}
             />
           </div>
+          <div className='list'>
+            <ClubList input={inputText}/>
+          </div>
       </div>
-      <div className='right'>
-          Result
+      <div className='right' id='ClubPreview'>
+          <div className='name' id = 'ClubName'>
+          </div>
+          <div className='description' id = 'ClubDesc'>
+          </div>
       </div>
     </div>
     </>
