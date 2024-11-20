@@ -1,13 +1,13 @@
 import React from 'react';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
 
 
 
-function Dashboard() {
+function Dashboard({setShowNavbar}) {
   const navigate = useNavigate();
   const [value, setValue] = useState(new Date());
   // Optional: Logout function that could clear session storage and redirect to login
@@ -18,6 +18,10 @@ function Dashboard() {
   const onChange = (date) => {
     setValue(date);
   }
+
+  useLayoutEffect(() => {
+    setShowNavbar(true);
+  }, [])
 
   return (
     <>

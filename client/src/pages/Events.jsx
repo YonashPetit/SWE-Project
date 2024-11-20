@@ -1,13 +1,13 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import EventList from '../lists/EventList';
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
 
 
 
-function Clubs() {
+function Clubs({setShowNavbar}) {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
 
@@ -16,6 +16,11 @@ function Clubs() {
 
     setInputText(lowerCase);
   };
+
+  useLayoutEffect(() => {
+    setShowNavbar(true);
+  }, [])
+  
   // Optional: Logout function that could clear session storage and redirect to login
   const handleLogout = () => {
     // Perform any logout logic here

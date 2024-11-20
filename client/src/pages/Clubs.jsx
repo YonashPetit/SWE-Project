@@ -1,15 +1,19 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import ClubList from '../lists/ClubList';
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
 
 
 
-function Clubs() {
+function Clubs({setShowNavbar}) {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
+
+  useLayoutEffect(() => {
+    setShowNavbar(true);
+  }, [])
 
   let inputhandler = (e) => {
     var lowerCase = e.target.value.toLowerCase();
