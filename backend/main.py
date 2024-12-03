@@ -28,17 +28,19 @@ users_collection = db["users"]
 @app.post("/create-user/")
 async def create_user(request: Request):
     data = await request.json()
+    user = data.get("username")
     email = data.get("email")
     password = data.get("password")
+    
 
-    if not email or not password:
-        raise HTTPException(status_code=400, detail="Email and password are required")
+    if not email or not password or not user:
+        raise HTTPException(status_code=400, detail="Email, user, and password are required")
 
     existing_user = users_collection.find_one({"email": email})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    user_data = {"email": email, "password": password}
+    user_data = {"email": email, "username": user, "password": password}
     users_collection.insert_one(user_data)
 
     return {"message": "User created successfully"}

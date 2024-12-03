@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 import logo from "../assets/images/logo.png";
 import "../App.css";
 
@@ -39,6 +40,10 @@ function Login({setShowNavbar}) {
       console.error("Error:", error);
       document.getElementById("errormsg").textContent = "An error occurred. Please try again.";
     }
+
+    secureLocalStorage.setItem("email", email);
+    secureLocalStorage.setItem("pwd", pwd);
+    secureLocalStorage.setItem("loggedin", true);
   };
 
   const createaccountpage = () => navigate("/createaccount");

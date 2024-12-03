@@ -1,9 +1,10 @@
 import React from 'react';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
+import secureLocalStorage from 'react-secure-storage';
 
 
 
@@ -13,12 +14,22 @@ function Dashboard({setShowNavbar}) {
   // Optional: Logout function that could clear session storage and redirect to login
   const handleLogout = () => {
     // Perform any logout logic here
-    navigate('/login');
+    secureLocalStorage.clear();
+    navigate('/');
   };
   const onChange = (date) => {
     setValue(date);
   }
-
+  useEffect(() => {
+    const loggedInUser = secureLocalStorage.getItem('loggedin');
+    if(loggedInUser) {
+      const user = document.getElementById("username");
+      user.innerHTML = secureLocalStorage.getItem('email');
+    }
+    else{
+      console.log("No one is logged in!");
+    }
+  },[])
   useLayoutEffect(() => {
     setShowNavbar(true);
   }, [])
