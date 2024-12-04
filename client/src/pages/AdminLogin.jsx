@@ -4,7 +4,7 @@ import secureLocalStorage from "react-secure-storage";
 import logo from "../assets/images/logo.png";
 import "../App.css";
 
-function Login({setShowNavbar}) {
+function AdminLogin({setShowNavbar}) {
   const userRef = useRef();
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
@@ -21,7 +21,7 @@ function Login({setShowNavbar}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/login", {
+      const response = await fetch("http://localhost:8000/login-admin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function Login({setShowNavbar}) {
     }
   };
 
-  const createaccountpage = () => navigate("/createaccount");
+  const createaccountpage = () => navigate("/adminca");
   const ForgotPassPage = () => navigate("/forgotpass");
 
   return (
@@ -58,6 +58,7 @@ function Login({setShowNavbar}) {
           <img src={logo} className="accountlogo" alt="Congregator logo"/>
         </Link>
       </div>
+      Admin Login
       <div className="center">
         <form onSubmit={handleSubmit} className="centerform">
           <label>Email:</label>
@@ -101,4 +102,4 @@ function Login({setShowNavbar}) {
   );
 }
 
-export default Login;
+export default AdminLogin;

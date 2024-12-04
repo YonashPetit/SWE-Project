@@ -20,20 +20,9 @@ function Dashboard({setShowNavbar}) {
   const onChange = (date) => {
     setValue(date);
   }
-  useEffect(() => {
-    const loggedInUser = secureLocalStorage.getItem('loggedin');
-    if(loggedInUser) {
-      const user = document.getElementById("username");
-      user.innerHTML = secureLocalStorage.getItem('email');
-    }
-    else{
-      console.log("No one is logged in!");
-    }
-  },[])
   useLayoutEffect(() => {
     setShowNavbar(true);
   }, [])
-
   return (
     <>
     <div className='flex-container'>

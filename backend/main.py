@@ -24,6 +24,7 @@ mongo_uri = os.getenv("MONGO_URI")
 client = MongoClient(mongo_uri)
 db = client["myappdb"]
 users_collection = db["users"]
+admin_collection = db["admins"]
 
 @app.post("/create-user/")
 async def create_user(request: Request):
@@ -54,6 +55,40 @@ async def login_user(request: Request):
     user = users_collection.find_one({"email": email})
 
     if not user or user["password"] != password:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    # Placeholder response for successful login
+    return {"message": "Login successful"}
+
+@app.post("/create-admin/")
+async def create_admin(request: Request):
+    data = await request.json()
+    club = data.get("clubname")
+    email = data.get("email")
+    password = data.get("password")
+    
+
+    if not email or not password or not club:
+        raise HTTPException(status_code=400, detail="Email, clubname, and password are required")
+
+    existing_admin = admin_collection.find_one({"email": email})
+    if existing_admin:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    admin_data = {"email": email, "clubname": club, "password": password}
+    admin_collection.insert_one(admin_data)
+
+    return {"message": "Admin created successfully"}
+
+@app.post("/login-admin")
+async def login_admin(request: Request):
+    data = await request.json()
+    email = data.get("email")
+    password = data.get("password")
+
+    admin = admin_collection.find_one({"email": email})
+
+    if not admin or admin["password"] != password:
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # Placeholder response for successful login

@@ -1,7 +1,19 @@
 import React from 'react';
 import './Navbar.css';
+import { useEffect } from 'react';
+import secureLocalStorage from 'react-secure-storage';
 
 const Navbar = () => {
+  useEffect(() => {
+    const loggedInUser = secureLocalStorage.getItem('loggedin');
+    if(loggedInUser) {
+      const user = document.getElementById("username");
+      user.innerHTML = secureLocalStorage.getItem('email');
+    }
+    else{
+      console.log("No one is logged in!");
+    }
+  },[])
   return (
     <nav className="navbar">
       <div className="navbar-left">

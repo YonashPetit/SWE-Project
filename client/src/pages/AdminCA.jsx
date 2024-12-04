@@ -23,7 +23,7 @@ function AdminCA({setShowNavbar}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/create-user/", {
+      const response = await fetch("http://localhost:8000/create-admin/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ function AdminCA({setShowNavbar}) {
         const { detail } = await response.json();
         document.getElementById("errormsg").textContent = detail;
       } else {
-        navigate("/"); // Redirect after successful account creation
+        navigate("/adminlogin"); // Redirect after successful account creation
       }
     } catch (error) {
       console.error("Error:", error);

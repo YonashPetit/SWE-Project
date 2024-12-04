@@ -28,6 +28,9 @@ function Home({setShowNavbar}) {
       <p className="read-the-docs">
         Your One Stop for all your UF Student Organization Needs!
       </p>
+      <a className= "read-the-docs" href = "/adminlogin">
+          Admin Login 
+      </a>
     </>
   )
 }
