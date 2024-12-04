@@ -13,10 +13,24 @@ function Account({setShowNavbar}){
     useEffect(() => {
       const loggedInUser = secureLocalStorage.getItem('loggedin');
       if(loggedInUser) {
-        const userbox = document.getElementById("user");
-        const emailbox = document.getElementById("email");
-        const passbox = document.getElementById("password");
-        emailbox.innerHTML = "Email: " + secureLocalStorage.getItem('email');
+        if(secureLocalStorage.getItem('admin') == true){
+          const idbox = document.getElementById("id");
+          const userbox = document.getElementById("user");
+          const emailbox = document.getElementById("email");
+          const passbox = document.getElementById("password");
+          idbox.innerHTML = "ID: " + secureLocalStorage.getItem('id');
+          userbox.innerHTML = "Username: " + secureLocalStorage.getItem('clubname');
+          emailbox.innerHTML = "Email: " + secureLocalStorage.getItem('email');
+        }
+        else{
+          const idbox = document.getElementById("id");
+          const userbox = document.getElementById("user");
+          const emailbox = document.getElementById("email");
+          const passbox = document.getElementById("password");
+          idbox.innerHTML = "ID: " + secureLocalStorage.getItem('id');
+          userbox.innerHTML = "Username: " + secureLocalStorage.getItem('username');
+          emailbox.innerHTML = "Email: " + secureLocalStorage.getItem('email');
+        }
       }
       else{
         console.log("No one is logged in!");
@@ -28,9 +42,12 @@ function Account({setShowNavbar}){
     return (
         <>
         <div className='flex-container'>
-          <div className='middle'>
+          <div className='middle' style={{marginLeft: "auto", marginRight: "auto"}}>
               <h2 id='profile'>
                 Profile Pic 
+              </h2>
+              <h2 id='id'>
+                ID Number:
               </h2>
               <h2 id='email'>
                 Email:

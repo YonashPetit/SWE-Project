@@ -73,3 +73,45 @@
     font-size: 20px;
     overflow: auto;
 }
+.event-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 5px;
+    background-color: #333;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.label {
+    display: block;
+    font-weight: bold;
+}
+
+.input, .textarea {
+    width: 75%;
+    padding: 5px;
+    height: 50px;
+    border: 1px solid green;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.textarea {
+    resize: vertical;
+    max-height: 50%;
+    word-spacing: normal;
+}
+
+.submit-button {
+width: 20%;
+padding: 1px;
+border: none;
+border-radius: 4px;
+background-color: green;
+color: #fff;
+font-size: 1rem;
+cursor: pointer;
+}
+  

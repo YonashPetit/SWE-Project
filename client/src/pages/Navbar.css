@@ -1,57 +1,64 @@
 .navbar {
-    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-  }
-  
-  .navbar-left .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  .navbar-center .nav-links {
-    list-style-type: none;
-    display: flex;
-    padding: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: -65px;
-  }
-  
-  .navbar-center .nav-links li {
-    margin-right: 1rem;
-  }
-  
-  .navbar-center .nav-links a {
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  .navbar-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  .navbar-right .cart-icon,
-  .navbar-right .user-icon {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 1rem;
-    position: relative;
-  }
-  
-  .navbar-right .cart-count {
-    background-color: #f44336;
-    color: #fff;
-    border-radius: 50%;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.8rem;
-    position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
-  }
+  display: flex;
+  justify-content: space-between; /* Keeps left and right sections in place */
+  align-items: center; /* Vertically aligns items */
+  position: relative; /* Ensures absolute positioning for navbar-center works */
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+.navbar-left {
+  flex: 0; /* Keeps it only as wide as its content */
+  display: flex;
+  align-items: center; /* Vertically aligns the content */
+}
+
+.navbar-left .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-center {
+  position: absolute; /* Removes it from flexbox layout */
+  left: 50%; /* Centers it horizontally in the navbar */
+  transform: translateX(-50%); /* Ensures true centering */
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-center .nav-links {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-center .nav-links li {
+  margin: 0 1rem; /* Adds spacing between links */
+}
+
+.navbar-center .nav-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-right {
+  flex: 1; /* Keeps it only as wide as its content */
+  display: flex;
+  justify-content: flex-end; /* Ensures it stays at the far right */
+  align-items: center; /* Vertically aligns the content */
+}
+
+.navbar-right .user-icon {
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  max-width: 200px; /* Adjust as needed for your layout */
+  white-space: nowrap; /* Prevent the text from wrapping */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Add "..." for overflowed text */
+}
+

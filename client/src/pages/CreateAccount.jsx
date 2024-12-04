@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useLayoutEffect} from "react";
 import { useNavigate, Link } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 import logo from "../assets/images/logo.png";
 import "../App.css";
 
@@ -14,7 +15,15 @@ function CreateAcc({setShowNavbar}) {
   useEffect(() => {
     userRef.current.focus();
   }, []);
-  
+  useEffect(() => {
+    const loggedInUser = secureLocalStorage.getItem('loggedin');
+    if(loggedInUser) {
+      navigate('/dashboard')
+    }
+    else{
+      console.log("No one is logged in!");
+    }
+  },[])
   useLayoutEffect(() => {
     setShowNavbar(false);
   }, [])

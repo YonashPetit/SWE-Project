@@ -1,5 +1,6 @@
 import './App.css'
 import {BrowserRouter as Router,  Routes,  Route} from 'react-router-dom';
+import { useState } from 'react';
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NoPage from "./pages/NoPage";
@@ -13,7 +14,8 @@ import Clubs from './pages/Clubs';
 import AdminLogin from './pages/AdminLogin';
 import AdminCA from './pages/AdminCA';
 import Account from './pages/Account';
-import { useState } from 'react';
+import CreateEvent from './pages/CreateEvent';
+import Club from './pages/Club';
 
 function App() {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -33,6 +35,8 @@ function App() {
           <Route path= "/events" element = {<Events setShowNavbar={setShowNavbar}/>} exact/>
           <Route path= "/clubs" element = {<Clubs setShowNavbar={setShowNavbar}/>} exact/>
           <Route path= "/account" element = {<Account setShowNavbar={setShowNavbar}/>} exact/>
+          <Route path= "/club" element = {<Club setShowNavbar={setShowNavbar}/>} exact/>
+          <Route path= "/createevent" element = {<CreateEvent setShowNavbar={setShowNavbar}/>} exact/>
           <Route path = "*" element = {<NoPage setShowNavbar={setShowNavbar}/>} exact/>
         </Routes> 
       </Router>

@@ -13,7 +13,15 @@ function Login({setShowNavbar}) {
   useEffect(() => {
     userRef.current.focus();
   }, []);
-
+  useEffect(() => {
+    const loggedInUser = secureLocalStorage.getItem('loggedin');
+    if(loggedInUser) {
+      navigate('/dashboard')
+    }
+    else{
+      console.log("No one is logged in!");
+    }
+  },[])
   useLayoutEffect(() => {
     setShowNavbar(false);
   }, [])
@@ -28,19 +36,19 @@ function Login({setShowNavbar}) {
         },
         body: JSON.stringify({ email, password: pwd }),
       });
-      console.log(response);
-      const result = await response.json();
-      if (!response.ok) {
-        const { detail } = result;
-        document.getElementById("errormsg").textContent = detail;
-      } else {
-        // Redirect to the Dashboard page on successful login
-        const { acc } = result;
-        console.log(acc);
-        secureLocalStorage.setItem("email", email);
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Success:", data); // This should log { message: "Login successful" }
+        secureLocalStorage.setItem("id", data.id);
+        secureLocalStorage.setItem("email", data.email);
+        secureLocalStorage.setItem("username", data.username);
         secureLocalStorage.setItem("pwd", pwd);
         secureLocalStorage.setItem("loggedin", true);
         navigate("/dashboard");
+      } else {
+        const error = await response.json();
+        document.getElementById("errormsg").textContent = detail;
+        console.error("Error:", error); // This logs any error message sent by FastAPI
       }
     } catch (error) {
       console.error("Error:", error);

@@ -25,6 +25,7 @@ client = MongoClient(mongo_uri)
 db = client["myappdb"]
 users_collection = db["users"]
 admin_collection = db["admins"]
+events_collection = db["event"]
 
 @app.post("/create-user/")
 async def create_user(request: Request):
@@ -57,8 +58,12 @@ async def login_user(request: Request):
     if not user or user["password"] != password:
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
-    # Placeholder response for successful login
-    return {"message": "Login successful"}
+    user_data = {
+        "id": str(user["_id"]),
+        "email": user["email"],
+        "username": user["username"]
+    }
+    return user_data
 
 @app.post("/create-admin/")
 async def create_admin(request: Request):
@@ -92,4 +97,9 @@ async def login_admin(request: Request):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # Placeholder response for successful login
-    return {"message": "Login successful"}
+    admin_data = {
+        "id": str(admin["_id"]),
+        "email": admin["email"],
+        "clubname": admin["clubname"]
+    }
+    return admin_data
