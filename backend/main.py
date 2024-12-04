@@ -25,7 +25,7 @@ client = MongoClient(mongo_uri)
 db = client["myappdb"]
 users_collection = db["users"]
 admin_collection = db["admins"]
-events_collection = db["event"]
+event_collection = db["event"]
 
 @app.post("/create-user/")
 async def create_user(request: Request):
@@ -103,3 +103,25 @@ async def login_admin(request: Request):
         "clubname": admin["clubname"]
     }
     return admin_data
+
+@app.post("/create-event/")
+async def create_event(request: Request):
+    data = await request.json()
+    eventname = data.get("eventname")
+    description = data.get("description")
+    location = data.get("location")
+    clubname = data.get("clubname")
+    date = data.get("date")
+    
+
+    if not eventname or not clubname or not description or not location or not date:
+        raise HTTPException(status_code=400, detail="All fields are required")
+
+    existing_event = event_collection.find_one({"eventname": eventname, "clubname": clubname, "date": date})
+    if existing_event:
+        raise HTTPException(status_code=400, detail="Event Already Existing")
+
+    event_data = {"eventname": eventname, "clubname": clubname, "description": description, "location": location, "date": date}
+    event_collection.insert_one(event_data)
+
+    return {"message": "Event created successfully"}

@@ -23,10 +23,33 @@ function CreateEvent({setShowNavbar}){
           [name]: value,
         });
     };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Event Details:', formData);
-        // Add logic here to send data to a backend or process it further
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch("http://localhost:8000/create-event/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            eventname: formData.eventName,
+            clubname: secureLocalStorage.getItem('clubname'),
+            description: formData.eventDescription,
+            location: formData.eventLocation,
+            date: formData.eventTime
+          }),
+        });
+        
+        if (!response.ok) {
+          const { detail } = await response.json();
+          document.getElementById("errormsg").textContent = detail;
+        } else {
+          navigate("/"); // Redirect after successful account creation
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("errormsg").textContent = "An error occurred. Please try again.";
+      }
     };
     useLayoutEffect(() => {
       setShowNavbar(true);
@@ -76,6 +99,9 @@ function CreateEvent({setShowNavbar}){
                     className="input"
                     required
                     />
+                    <div>
+                    <h8 id="errormsg"></h8>
+                    </div>
                     <div>
                     <button type="submit" className="submit-button">Submit</button>
                     </div>
