@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import secureLocalStorage from 'react-secure-storage';
 
 function ClubList(props) {
   const [clubs, setClubs] = useState([]);
@@ -35,8 +36,9 @@ function ClubList(props) {
     const button = document.getElementById("button");
 
     previewname.innerHTML = item.clubname; // Adjusted to match the backend field
-    previewdesc.innerHTML = "item.description";
+    previewdesc.innerHTML = item._id;
     button.style.display = "block";
+    secureLocalStorage.setItem("curclub", item._id)
   };
 
   return (
