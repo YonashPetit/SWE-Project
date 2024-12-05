@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import EventList from '../lists/EventList';
-import axios from 'axios';
+import secureLocalStorage from 'react-secure-storage';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
@@ -22,7 +22,30 @@ function Clubs({setShowNavbar}) {
   useLayoutEffect(() => {
     setShowNavbar(true);
   }, [])
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8000/event-rsvp/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event_id: secureLocalStorage.getItem('curevent'), user_id: secureLocalStorage.getItem('id')}),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to rsvp");
+      }
+      const data = await response.json();
+      alert(data.message); // Success message
+    } catch (error) {
+      console.error("Error with rsvp:", error.message);
+      alert(`Error: ${error.message}`);
+    }
+    navigate('/dashboard');
+  };
+
   return (
     <>
     <div className='flex-container'>
@@ -53,6 +76,9 @@ function Clubs({setShowNavbar}) {
           <div id = 'EventLoc' className='datetime'>
           </div>
           <div id = 'EventDesc' className='description'>
+          </div>
+          <div className='center' style={{marginTop: "30px"}}>
+            <button className='submit-button' id='button' onClick={handleSubmit} style={{display: "none"}}>RSVP</button>
           </div>
       </div>
     </div>

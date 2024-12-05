@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import secureLocalStorage from 'react-secure-storage';
 function EventList(props) {
   const [events, setEvents] = useState([]);
 
@@ -36,6 +36,7 @@ function EventList(props) {
     const previewhost = document.getElementById("EventHost");
     const previewloc = document.getElementById("EventLoc");
     const previewdesc = document.getElementById("EventDesc");
+    const button = document.getElementById("button");
     
 
     previewname.innerHTML = item.eventname; // Adjusted to match the backend field
@@ -43,6 +44,9 @@ function EventList(props) {
     previewdate.innerHTML = item.date; // Adjusted to match the backend field
     previewhost.innerHTML = item.clubname; // Adjusted to match the backend field
     previewloc.innerHTML = item.location;
+    button.style.display = "block";
+    secureLocalStorage.setItem("curevent", item._id)
+
   };
 
   return (

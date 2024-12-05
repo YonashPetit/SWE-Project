@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
-# from bson import ObjectID
+from bson import ObjectId
 import os
 from dotenv import load_dotenv
 
@@ -155,7 +155,7 @@ async def join_club(request: Request):
 
     # Validate the club ID in the request
     club_id = data.get("club_id")
-    user_id = Object_ID(data.get("user_id"))
+    user_id = ObjectId(data.get("user_id"))
     if not club_id:
         raise HTTPException(status_code=400, detail="Club ID is required")
 
@@ -171,3 +171,26 @@ async def join_club(request: Request):
     )
 
     return {"message": f"User successfully joined the club {club_id}"}
+
+@app.put("/event-rsvp/")
+async def event_rsvp(request: Request):
+    data = await request.json()
+
+    # Validate the club ID in the request
+    event_id = data.get("event_id")
+    user_id = ObjectId(data.get("user_id"))
+    if not event_id:
+        raise HTTPException(status_code=400, detail="Event ID is required")
+
+    # Check if the user exists
+    user = users_collection.find_one({"_id": user_id})  # Use user_id as a string directly
+    if not user:
+        raise HTTPException(status_code=404, detail=user_id)
+
+    # Add the club ID to the joinedClubIds array, ensuring no duplicates
+    users_collection.update_one(
+        {"_id": user_id},
+        {"$addToSet": {"eventRsvps": event_id}}  # $addToSet prevents duplicates
+    )
+
+    return {"message": f"User successfully rsvped to event {event_id}"}
