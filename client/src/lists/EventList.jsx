@@ -34,12 +34,15 @@ function EventList(props) {
     const previewname = document.getElementById("EventName");
     const previewdate = document.getElementById("EventDate&Time");
     const previewhost = document.getElementById("EventHost");
+    const previewloc = document.getElementById("EventLoc");
     const previewdesc = document.getElementById("EventDesc");
+    
 
     previewname.innerHTML = item.eventname; // Adjusted to match the backend field
     previewdesc.innerHTML = item.description; // No change, already matching
     previewdate.innerHTML = item.date; // Adjusted to match the backend field
     previewhost.innerHTML = item.clubname; // Adjusted to match the backend field
+    previewloc.innerHTML = item.location;
   };
 
   return (

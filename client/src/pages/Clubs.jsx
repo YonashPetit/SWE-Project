@@ -20,14 +20,6 @@ function Clubs({setShowNavbar}) {
 
     setInputText(lowerCase);
   };
-  // Optional: Logout function that could clear session storage and redirect to login
-  const handleLogout = () => {
-    // Perform any logout logic here
-    navigate('/login');
-  };
-  const onChange = (date) => {
-    setValue(date);
-  }
 
   return (
     <>
@@ -51,7 +43,10 @@ function Clubs({setShowNavbar}) {
       <div className='right' id='ClubPreview'>
           <div className='name' id = 'ClubName'>
           </div>
-          <div className='description' id = 'ClubDesc'>
+          <div className='description' id = 'ClubDesc' style={{marginTop: "30px"}}>
+          </div>
+          <div className='center' style={{marginTop: "30px"}}>
+            <button className='submit-button' id='button' style={{display: "none"}}>Join Club</button>
           </div>
       </div>
     </div>

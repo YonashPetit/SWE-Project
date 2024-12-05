@@ -19,25 +19,10 @@ function Clubs({setShowNavbar}) {
 
     setInputText(lowerCase);
   };
-  useEffect(() => {
-    // URL of the FastAPI backend
-    const apiUrl = 'http://localhost:8000/get-events/';
-    axios.get(apiUrl)
-      .then((response) => {
-        setEvents(response.data.events);
-        console.log(response);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError('Error fetching events');
-        setLoading(false);
-      });
-  }, []);
-
   useLayoutEffect(() => {
     setShowNavbar(true);
   }, [])
-
+  
   return (
     <>
     <div className='flex-container'>
@@ -54,7 +39,8 @@ function Clubs({setShowNavbar}) {
             />
           </div>
           <div className='list'>
-            <EventList/>
+            <EventList input={inputText}/>
+
           </div>
       </div>
       <div className='right'>
@@ -63,6 +49,8 @@ function Clubs({setShowNavbar}) {
           <div id = 'EventHost' className='host'>
           </div>
           <div id = 'EventDate&Time' className='datetime'>
+          </div>
+          <div id = 'EventLoc' className='datetime'>
           </div>
           <div id = 'EventDesc' className='description'>
           </div>

@@ -137,3 +137,41 @@ async def get_events():
 
     return {"events": events}
 
+@app.get("/get-clubs/")
+async def get_clubs():
+    # Retrieve all events from the collection
+    clubs = list(admin_collection.find())
+
+    # Convert ObjectId to string for JSON serialization
+    for club in clubs:
+        club["_id"] = str(club["_id"])
+
+    return {"clubs": clubs}
+
+@app.put("/join-club/{user_id}/")
+async def join_club(user_id: str, request: Request):
+    data = await request.json()
+
+    # Validate the club ID in the request
+    club_id = data.get("club_id")
+    if not club_id:
+        raise HTTPException(status_code=400, detail="Club ID is required")
+
+    # Validate and parse user_id as ObjectId
+    try:
+        user_object_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user ID format")
+
+    # Check if the user exists
+    user = users_collection.find_one({"_id": user_object_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Add the club ID to the joinedClubIds array, ensuring no duplicates
+    users_collection.update_one(
+        {"_id": user_object_id},
+        {"$addToSet": {"joinedClubIds": club_id}}  # $addToSet prevents duplicates
+    )
+
+    return {"message": f"User successfully joined the club {club_id}"}
