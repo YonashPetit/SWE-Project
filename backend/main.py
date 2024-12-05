@@ -125,3 +125,15 @@ async def create_event(request: Request):
     event_collection.insert_one(event_data)
 
     return {"message": "Event created successfully"}
+
+@app.get("/get-events/")
+async def get_events():
+    # Retrieve all events from the collection
+    events = list(event_collection.find())
+
+    # Convert ObjectId to string for JSON serialization
+    for event in events:
+        event["_id"] = str(event["_id"])
+
+    return {"events": events}
+

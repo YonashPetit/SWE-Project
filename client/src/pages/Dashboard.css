@@ -101,17 +101,22 @@
 .textarea {
     resize: vertical;
     max-height: 50%;
+    line-height: 1;
     word-spacing: normal;
 }
 
 .submit-button {
-width: 20%;
-padding: 1px;
-border: none;
-border-radius: 4px;
-background-color: green;
-color: #fff;
-font-size: 1rem;
-cursor: pointer;
+    background: black;
+    color: white;
+    font-size: 15px;
+    border: 1px solid green;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    line-height: 3;
+    transition: filter 300ms;
+    height: auto;
+    width: fit-content;
 }
   

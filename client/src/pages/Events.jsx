@@ -1,7 +1,8 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import EventList from '../lists/EventList';
-import { useState, useLayoutEffect } from 'react';
+import axios from 'axios';
+import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
 
@@ -10,25 +11,32 @@ import "../pages/Dashboard.css";
 function Clubs({setShowNavbar}) {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
-
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   let inputhandler = (e) => {
     var lowerCase = e.target.value.toLowerCase();
 
     setInputText(lowerCase);
   };
+  useEffect(() => {
+    // URL of the FastAPI backend
+    const apiUrl = 'http://localhost:8000/get-events/';
+    axios.get(apiUrl)
+      .then((response) => {
+        setEvents(response.data.events);
+        console.log(response);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Error fetching events');
+        setLoading(false);
+      });
+  }, []);
 
   useLayoutEffect(() => {
     setShowNavbar(true);
   }, [])
-  
-  // Optional: Logout function that could clear session storage and redirect to login
-  const handleLogout = () => {
-    // Perform any logout logic here
-    navigate('/login');
-  };
-  const onChange = (date) => {
-    setValue(date);
-  }
 
   return (
     <>
@@ -46,7 +54,7 @@ function Clubs({setShowNavbar}) {
             />
           </div>
           <div className='list'>
-            <EventList input={inputText}/>
+            <EventList/>
           </div>
       </div>
       <div className='right'>

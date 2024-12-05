@@ -103,7 +103,7 @@ function CreateEvent({setShowNavbar}){
                     <h8 id="errormsg"></h8>
                     </div>
                     <div>
-                    <button type="submit" className="submit-button">Submit</button>
+                    <button type="submit" className="submit-button">Create Event</button>
                     </div>
                 </form>
             </div>

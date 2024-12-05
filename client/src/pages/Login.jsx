@@ -47,11 +47,13 @@ function Login({setShowNavbar}) {
         navigate("/dashboard");
       } else {
         const error = await response.json();
-        document.getElementById("errormsg").textContent = detail;
+        document.getElementById("errormsg").style.display = "block";
+        document.getElementById("errormsg").textContent = error.detail;
         console.error("Error:", error); // This logs any error message sent by FastAPI
       }
     } catch (error) {
       console.error("Error:", error);
+      document.getElementById("errormsg").style.display = "block";
       document.getElementById("errormsg").textContent = "An error occurred. Please try again.";
     }
   };
@@ -94,7 +96,9 @@ function Login({setShowNavbar}) {
             <p id="forgotpass" style={{ color: "green", cursor: "pointer" }} onClick={ForgotPassPage}>
               Forgot Password?
             </p>
-            <p id="errormsg" style={{ color: "red" }}></p>
+          </div>
+          <div>
+            <p id="errormsg" style={{ color: "red", display: "none"}}></p>
           </div>
           <div className="center">
             <input className="button" type="submit" value="Login" />
