@@ -8,98 +8,120 @@ import secureLocalStorage from 'react-secure-storage';
 
 
 
-function Dashboard({setShowNavbar}) {
+function Dashboard({ setShowNavbar }) {
   const navigate = useNavigate();
   const [value, setValue] = useState(new Date());
   const [clubs, setClubs] = useState([]);
   const [events, setEvents] = useState([]);
+
   useEffect(() => {
-    const fetchEvents = async (e) => {
+    const fetchEvents = async () => {
       try {
         const userId = secureLocalStorage.getItem("id");
         const response = await fetch("http://localhost:8000/get-events/", {
-            method: "GET",
+          method: "GET",
         });
         const data = await response.json();
-        for (let i = 0; i < data.events.length; i++) {
-          if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) != -1){
-            console.log(data.events[i]);
-          }
-          else{
-            console.log("Not rsvped");
-            let removed = data.events.splice(i,1);
-            console.log(removed);
-          }
-        }
-        setEvents(data.events);
+
+        // Filter events where the user is attending
+        const filteredEvents = data.events.filter((event) =>
+          event.attending.includes(userId)
+        );
+        setEvents(filteredEvents);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching events:", error);
       }
     };
-    const fetchClubs = async (e) => {
+
+    const fetchClubs = async () => {
       try {
         const response = await fetch("http://localhost:8000/get-clubs/", {
-            method: "GET",
+          method: "GET",
         });
         const data = await response.json();
-        console.log(data.clubs);
-        for (let i = 0; i < data.clubs.length; i++) {
-          if (data.clubs[i].member.indexOf(secureLocalStorage.getItem('id')) != -1){
-            console.log(data.clubs[i]);
-          }
-          else{
-            console.log("Not part of club");
-            let removed = data.clubs.splice(i,1);
-            console.log(removed);
-          }
-        }
-        setClubs(data.clubs);
-        console.log(data.clubs);
+
+        // Filter clubs where the user is a member
+        const filteredClubs = data.clubs.filter((club) =>
+          club.member.includes(secureLocalStorage.getItem("id"))
+        );
+        setClubs(filteredClubs);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching clubs:", error);
       }
     };
 
     fetchEvents();
     fetchClubs();
   }, []);
-  const onChange = (date) => {
-    setValue(date);
-  }
-  useLayoutEffect(() => {
-    setShowNavbar(true);
-  }, [])
+
+  const handleUnRSVP = async (eventId) => {
+    try {
+      const userId = secureLocalStorage.getItem("id");
+      const response = await fetch("http://localhost:8000/unrsvp-event/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, event_id: eventId }),
+      });
+
+      if (response.ok) {
+        // Remove the event from the local state
+        setEvents((prevEvents) =>
+          prevEvents.filter((event) => event._id !== eventId)
+        );
+      } else {
+        console.error("Failed to un-RSVP");
+      }
+    } catch (error) {
+      console.error("Error during un-RSVP:", error);
+    }
+  };
+
   return (
     <>
-    <div className='flex-container'>
-      <div className='sides'> 
-          <p id = "Events">Your Events</p>
+      <div className="flex-container">
+        <div className="sides">
+          <p id="Events">Your Events</p>
           {events.map((item) => (
             <li
-              style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+              style={{
+                cursor: "pointer",
+                listStyle: "none",
+                margin: "0",
+                padding: "0",
+              }}
               key={item._id}
             >
-              {item.eventname} {/* Adjusted to display the event name */}
+              {item.eventname} {/* Display event name */}
+              <button className = "unrsvp-button"
+                onClick={() => handleUnRSVP(item._id)}
+              >
+                Un-RSVP
+              </button>
             </li>
           ))}
-      </div>
-      <div className='middle'>
+        </div>
+        <div className="middle">
           <CalendarContainer>
-            <Calendar/>
+            <Calendar />
           </CalendarContainer>
-      </div>
-      <div className='sides'>
-          <p id = "Clubs">Your Clubs</p>
+        </div>
+        <div className="sides">
+          <p id="Clubs">Your Clubs</p>
           {clubs.map((item) => (
             <li
-              style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+              style={{
+                cursor: "pointer",
+                listStyle: "none",
+                margin: "0",
+                padding: "0",
+              }}
               key={item._id}
             >
-              {item.clubname} {/* Adjusted to display the event name */}
+              {item.clubname} {/* Display club name */}
             </li>
           ))}
+        </div>
       </div>
-    </div>
     </>
   );
 }

@@ -201,3 +201,39 @@ async def event_rsvp(request: Request):
         {"$addToSet": {"attending": str(user_id)}}  # $addToSet prevents duplicates
     )
     return {"message": f"User successfully rsvped to event {event_id}"}
+
+@app.post("/unrsvp-event/")
+async def unrsvp_event(request: Request):
+    """
+    Endpoint to un-RSVP a user from an event.
+    Removes the user's ID from the `attending` array of the specified event.
+    """
+    data = await request.json()
+
+    # Validate the event ID and user ID in the request
+    event_id = data.get("event_id")
+    user_id = ObjectId(data.get("user_id"))
+    if not event_id or not user_id:
+        raise HTTPException(status_code=400, detail="Event ID and User ID are required")
+
+    # Check if the event exists
+    event = event_collection.find_one({"_id": ObjectId(event_id)})
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+
+    # Remove the user ID from the attending array
+    result = event_collection.update_one(
+        {"_id": ObjectId(event_id)},
+        {"$pull": {"attending": str(user_id)}}  # Remove user ID from attending array
+    )
+
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User was not RSVPed to this event")
+
+    # Also remove the event ID from the user's RSVP list, if applicable
+    users_collection.update_one(
+        {"_id": user_id},
+        {"$pull": {"eventRsvps": event_id}}  # Remove event ID from user's RSVP list
+    )
+
+    return {"message": f"User successfully un-RSVPed from event {event_id}"}
