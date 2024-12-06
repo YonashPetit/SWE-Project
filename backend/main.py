@@ -124,7 +124,7 @@ async def create_event(request: Request):
     if existing_event:
         raise HTTPException(status_code=400, detail="Event Already Existing")
 
-    event_data = {"eventname": eventname, "clubname": clubname, "description": description, "location": location, "date": date}
+    event_data = {"eventname": eventname, "clubname": clubname, "description": description, "location": location, "date": date, "attending": []}
     event_collection.insert_one(event_data)
 
     return {"message": "Event created successfully"}

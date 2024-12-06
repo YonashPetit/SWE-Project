@@ -138,7 +138,7 @@ function Dashboard({setShowNavbar}) {
             <p id = "Events">Your Events</p>
             {events.map((item) => (
               <li
-                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0', lineHeight: '2' }}
                 key={item._id}
               >
                 <div>
@@ -147,6 +147,9 @@ function Dashboard({setShowNavbar}) {
                 <div style={{ fontSize: "0.9em", color: "gray" }}>
                   {moment(item.date).format("MMMM Do YYYY, h:mm A")}
                 </div> {/* Adjusted to display the event name */}
+                <div style={{ fontSize: "0.9em", color: "gray" }}>
+                  {"Attending:  " + item.attending.length}
+                </div>
               </li>
             ))}
         </div>
