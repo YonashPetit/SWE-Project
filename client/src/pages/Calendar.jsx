@@ -31,7 +31,7 @@ function Calendars({ setShowNavbar }) {
           return event.attending.includes(userId);
         }
       });
-
+      filtered.sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? -1 : 1);
       setEvents(filtered); // Update the state with the filtered events
       setFilteredEvents(filtered); // Initialize filteredEvents
     } catch (error) {

@@ -16,36 +16,36 @@ function Dashboard({setShowNavbar}) {
   const [events, setEvents] = useState([]);
   const fetchEvents = async (e) => {
     try {
-      const userId = secureLocalStorage.getItem("id");
-      const response = await fetch("http://localhost:8000/get-events/", {
-          method: "GET",
-      });
-      const data = await response.json();
-      if(secureLocalStorage.getItem('admin') == true){
-        for (let i = data.events.length - 1; i >= 0; i--) {
-          if (data.events[i].clubname == secureLocalStorage.getItem('clubname')) {
-            
-          } else {
-            let removed = data.events.splice(i, 1);
-          }
+        const userId = secureLocalStorage.getItem("id");
+        const response = await fetch("http://localhost:8000/get-events/", {
+            method: "GET",
+        });
+        const data = await response.json();
+        if (secureLocalStorage.getItem('admin') == true) {
+            for (let i = data.events.length - 1; i >= 0; i--) {
+                if (data.events[i].clubname == secureLocalStorage.getItem('clubname')) {
+                } else {
+                    data.events.splice(i, 1);
+                }
+            }
+        } else {
+            for (let i = data.events.length - 1; i >= 0; i--) {
+                if (!data.events[i].attending) {
+                    data.events.splice(i, 1);
+                    continue;
+                }
+                if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) === -1) {
+                    data.events.splice(i, 1);
+                }
+            }
         }
-      }
-      else {
-        for (let i = data.events.length - 1; i >= 0; i--) {
-          if (!data.events[i].attending){
-            let removed = data.events.splice(i, 1);
-            continue;
-          }
-          if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) !== -1) {
-            
-          } else {
-            let removed = data.events.splice(i, 1);
-          }
-        }
-      }
-      setEvents(data.events);      
+
+        // Sort events by date using moment.js
+        data.events.sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? -1 : 1);
+        
+        setEvents(data.events);
     } catch (error) {
-      console.error('Error fetching events:', error);
+        console.error('Error fetching events:', error);
     }
   };
   const fetchClubs = async (e) => {

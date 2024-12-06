@@ -14,24 +14,24 @@ function Club({setShowNavbar}){
     }
     const fetchEvents = async (e) => {
       try {
-        const userId = secureLocalStorage.getItem("id");
-        const response = await fetch("http://localhost:8000/get-events/", {
-            method: "GET",
-        });
-        const data = await response.json();
+          const userId = secureLocalStorage.getItem("id");
+          const response = await fetch("http://localhost:8000/get-events/", {
+              method: "GET",
+          });
+          const data = await response.json();
           for (let i = data.events.length - 1; i >= 0; i--) {
-            if (data.events[i].clubname == secureLocalStorage.getItem('clubname')) {
-              
-            } else {
-              let removed = data.events.splice(i, 1);
-            }
+              if (data.events[i].clubname == secureLocalStorage.getItem('clubname')) {
+              } else {
+                  data.events.splice(i, 1);
+              }
           }
-        setEvents(data.events);      
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    }
-  };
-    
+          // Sort events by date using moment.js
+          data.events.sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? -1 : 1);
+          setEvents(data.events);
+      } catch (error) {
+          console.error('Error fetching events:', error);
+      }
+    };
     useLayoutEffect(() => {
       setShowNavbar(true);
     }, [])
