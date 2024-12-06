@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import secureLocalStorage from 'react-secure-storage';
+import moment from 'moment';
 function EventList(props) {
   const [events, setEvents] = useState([]);
 
@@ -41,7 +42,7 @@ function EventList(props) {
 
     previewname.innerHTML = item.eventname; // Adjusted to match the backend field
     previewdesc.innerHTML = item.description; // No change, already matching
-    previewdate.innerHTML = item.date; // Adjusted to match the backend field
+    previewdate.innerHTML = moment(item.date).format("MMMM Do YYYY, h:mm A"); // Adjusted to match the backend field
     previewhost.innerHTML = item.clubname; // Adjusted to match the backend field
     previewloc.innerHTML = item.location;
     button.style.display = "block";

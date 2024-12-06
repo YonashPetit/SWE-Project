@@ -25,6 +25,9 @@ function Calendars({ setShowNavbar }) {
 
       // Filter based on user or admin privileges
       const filtered = data.events.filter((event) => {
+        if(!event.attending){
+          return null;
+        }
         if (secureLocalStorage.getItem('admin') === true) {
           return event.clubname === secureLocalStorage.getItem('clubname');
         } else {

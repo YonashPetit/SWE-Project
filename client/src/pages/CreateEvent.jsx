@@ -79,7 +79,7 @@ function CreateEvent({setShowNavbar}){
                     className="textarea"
                     required
                     ></textarea>
-                    <label htmlFor="eventTime" className="label">Event Time</label>
+                    <label htmlFor="eventTime" className="label">Event Date & Time</label>
                     <input
                     type="datetime-local"
                     id="eventTime"
