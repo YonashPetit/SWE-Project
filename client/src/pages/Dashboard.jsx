@@ -11,12 +11,58 @@ import secureLocalStorage from 'react-secure-storage';
 function Dashboard({setShowNavbar}) {
   const navigate = useNavigate();
   const [value, setValue] = useState(new Date());
-  // Optional: Logout function that could clear session storage and redirect to login
-  const handleLogout = () => {
-    // Perform any logout logic here
-    secureLocalStorage.clear();
-    navigate('/');
-  };
+  const [clubs, setClubs] = useState([]);
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    const fetchEvents = async (e) => {
+      try {
+        const userId = secureLocalStorage.getItem("id");
+        const response = await fetch("http://localhost:8000/get-events/", {
+            method: "GET",
+        });
+        const data = await response.json();
+        for (let i = 0; i < data.events.length; i++) {
+          if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) != -1){
+            console.log(data.events[i]);
+          }
+          else{
+            console.log("Not rsvped");
+            let removed = data.events.splice(i,1);
+            console.log(removed);
+          }
+        }
+        setEvents(data.events);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+    const fetchClubs = async (e) => {
+      try {
+        const response = await fetch("http://localhost:8000/get-clubs/", {
+            method: "GET",
+        });
+        const data = await response.json();
+        console.log(data.clubs);
+        for (let i = 0; i < data.clubs.length; i++) {
+          if (data.clubs[i].member.indexOf(secureLocalStorage.getItem('id')) != -1){
+            console.log(data.clubs[i]);
+          }
+          else{
+            console.log("Not part of club");
+            let removed = data.clubs.splice(i,1);
+            console.log(removed);
+          }
+        }
+        setClubs(data.clubs);
+        console.log(data.clubs);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+    fetchClubs();
+  }, []);
   const onChange = (date) => {
     setValue(date);
   }
@@ -27,7 +73,15 @@ function Dashboard({setShowNavbar}) {
     <>
     <div className='flex-container'>
       <div className='sides'> 
-          Events
+          <p id = "Events">Your Events</p>
+          {events.map((item) => (
+            <li
+              style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+              key={item._id}
+            >
+              {item.eventname} {/* Adjusted to display the event name */}
+            </li>
+          ))}
       </div>
       <div className='middle'>
           <CalendarContainer>
@@ -35,7 +89,15 @@ function Dashboard({setShowNavbar}) {
           </CalendarContainer>
       </div>
       <div className='sides'>
-        Clubs
+          <p id = "Clubs">Your Clubs</p>
+          {clubs.map((item) => (
+            <li
+              style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+              key={item._id}
+            >
+              {item.clubname} {/* Adjusted to display the event name */}
+            </li>
+          ))}
       </div>
     </div>
     </>

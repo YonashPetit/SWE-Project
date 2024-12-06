@@ -169,6 +169,10 @@ async def join_club(request: Request):
         {"_id": user_id},
         {"$addToSet": {"joinedClubIds": club_id}}  # $addToSet prevents duplicates
     )
+    admin_collection.update_one(
+        {"_id": ObjectId(club_id)},
+        {"$addToSet": {"member": str(user_id)}}  # $addToSet prevents duplicates
+    )
 
     return {"message": f"User successfully joined the club {club_id}"}
 
@@ -192,5 +196,8 @@ async def event_rsvp(request: Request):
         {"_id": user_id},
         {"$addToSet": {"eventRsvps": event_id}}  # $addToSet prevents duplicates
     )
-
+    event_collection.update_one(
+        {"_id": ObjectId(event_id)},
+        {"$addToSet": {"attending": str(user_id)}}  # $addToSet prevents duplicates
+    )
     return {"message": f"User successfully rsvped to event {event_id}"}
