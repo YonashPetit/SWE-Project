@@ -26,13 +26,18 @@ function Calendars({ setShowNavbar }) {
       // Filter based on user or admin privileges
       const filtered = data.events.filter((event) => {
         if(!event.attending){
-          return null;
+          if (secureLocalStorage.getItem('admin') === true) {
+            return event.clubname === secureLocalStorage.getItem('clubname');
+          }
         }
-        if (secureLocalStorage.getItem('admin') === true) {
-          return event.clubname === secureLocalStorage.getItem('clubname');
-        } else {
-          return event.attending.includes(userId);
+        else{
+          if (secureLocalStorage.getItem('admin') === true) {
+            return event.clubname === secureLocalStorage.getItem('clubname');
+          } else {
+            return event.attending.includes(userId);
+          }
         }
+        
       });
       filtered.sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? -1 : 1);
       setEvents(filtered); // Update the state with the filtered events
@@ -82,9 +87,9 @@ function Calendars({ setShowNavbar }) {
             />
           </CalendarContainer>
         </div>
-        <div className="right">
-          <h2 id = "dateplace">Events</h2>
-          <h2 id = "date" style={{display: 'none'}}>Events on {selectedDate.toDateString()}</h2>
+        <div className="right" style={{overflowY: 'auto'}}>
+          <h2 id = "dateplace" style={{marginLeft: '35px'}}>Your Events</h2>
+          <h2 id = "date" style={{display: 'none',marginLeft: '25px'}}>Events on {selectedDate.toDateString()}</h2>
           {filteredEvents.length > 0 ? (
             <ul style={{listStyleType: "none"}}>
               {filteredEvents.map((event) => (

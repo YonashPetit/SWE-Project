@@ -134,7 +134,7 @@ function Dashboard({setShowNavbar}) {
     return (
       <>
       <div className='flex-container'>
-        <div className='sides'> 
+        <div className='sides' style={{ overflowY: 'auto' }}> 
             <p id = "Events">Your Events</p>
             {events.map((item) => (
               <li
@@ -174,7 +174,7 @@ function Dashboard({setShowNavbar}) {
     return (
       <>
       <div className='flex-container'>
-        <div className='sides' style={{ overflowY: 'auto', }}> 
+        <div className='sides' style={{ overflowY: 'auto' }}> 
             <p id = "Events">Your Events</p>
             {events.map((item) => (
               <li

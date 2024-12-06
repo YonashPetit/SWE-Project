@@ -46,7 +46,7 @@ function Club({setShowNavbar}){
         return (
             <>
             <div className='flex-container'>
-            <div className='middle' style={{marginLeft: "auto", marginRight: "auto"}}>
+            <div className='middle' style={{marginLeft: "auto", marginRight: "auto", overflowY: 'auto' }}>
                 <div id = "name" style={{fontSize: "XX-Large"}}>
                   Name
                 </div>
