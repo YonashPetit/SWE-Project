@@ -119,4 +119,54 @@
     height: auto;
     width: fit-content;
 }
+.clubeventlist{
+    
+}
+.unrsvp-button {
+    background-color: rgb(255, 0, 0);
+    color: white;
+    font-size: 15px;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    line-height: 3;
+    transition: filter 300ms;
+    height: auto;
+    width: fit-content;
+    margin-left: 10px;
+
+    &:hover {
+        background-color: rgb(201, 0, 0);
+    }
+
+    &:active {
+        background-color: rgb(161, 4, 4);
+    }
+}
+
+.remove-club-button {
+    background-color: rgb(255, 0, 0);
+    color: white;
+    font-size: 15px;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    line-height: 3;
+    transition: filter 300ms;
+    height: auto;
+    width: fit-content;
+    margin-left: 10px;
+
+    &:hover {
+        background-color: rgb(201, 0, 0);
+    }
+
+    &:active {
+        background-color: rgb(161, 4, 4);
+    }
+}
   

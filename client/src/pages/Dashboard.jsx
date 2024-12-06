@@ -13,95 +13,194 @@ function Dashboard({setShowNavbar}) {
   const [value, setValue] = useState(new Date());
   const [clubs, setClubs] = useState([]);
   const [events, setEvents] = useState([]);
+  const fetchEvents = async (e) => {
+    try {
+      const userId = secureLocalStorage.getItem("id");
+      const response = await fetch("http://localhost:8000/get-events/", {
+          method: "GET",
+      });
+      const data = await response.json();
+      if(secureLocalStorage.getItem('admin') == true){
+        for (let i = data.events.length - 1; i >= 0; i--) {
+          if (data.events[i].clubname == secureLocalStorage.getItem('clubname')) {
+            
+          } else {
+            let removed = data.events.splice(i, 1);
+          }
+        }
+      }
+      else {
+        for (let i = data.events.length - 1; i >= 0; i--) {
+          if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) !== -1) {
+            
+          } else {
+            let removed = data.events.splice(i, 1);
+          }
+        }
+      }
+      setEvents(data.events);      
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+  const fetchClubs = async (e) => {
+    try {
+      const response = await fetch("http://localhost:8000/get-clubs/", {
+          method: "GET",
+      });
+      const data = await response.json();
+      if(secureLocalStorage.getItem('admin') == true){
+        for (let i = data.clubs.length - 1; i >= 0; i--) {
+          if (data.clubs[i].clubname == secureLocalStorage.getItem('clubname')) {
+            
+          } else {
+            let removed = data.clubs.splice(i, 1);
+          }
+        }
+      }
+      else{
+        for (let i = data.clubs.length - 1; i >= 0; i--) {
+          if (data.clubs[i].member.indexOf(secureLocalStorage.getItem('id')) !== -1) {
+            
+          } else {
+            let removed = data.clubs.splice(i, 1);
+          }
+        }
+      }
+      setClubs(data.clubs);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
   useEffect(() => {
-    const fetchEvents = async (e) => {
-      try {
-        const userId = secureLocalStorage.getItem("id");
-        const response = await fetch("http://localhost:8000/get-events/", {
-            method: "GET",
-        });
-        const data = await response.json();
-        for (let i = 0; i < data.events.length; i++) {
-          if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) != -1){
-            console.log(data.events[i]);
-          }
-          else{
-            console.log("Not rsvped");
-            let removed = data.events.splice(i,1);
-            console.log(removed);
-          }
-        }
-        setEvents(data.events);
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
-    };
-    const fetchClubs = async (e) => {
-      try {
-        const response = await fetch("http://localhost:8000/get-clubs/", {
-            method: "GET",
-        });
-        const data = await response.json();
-        console.log(data.clubs);
-        for (let i = 0; i < data.clubs.length; i++) {
-          if (data.clubs[i].member.indexOf(secureLocalStorage.getItem('id')) != -1){
-            console.log(data.clubs[i]);
-          }
-          else{
-            console.log("Not part of club");
-            let removed = data.clubs.splice(i,1);
-            console.log(removed);
-          }
-        }
-        setClubs(data.clubs);
-        console.log(data.clubs);
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
-    };
-
     fetchEvents();
     fetchClubs();
   }, []);
+  const handleUnRSVP = async (eventId) => {
+    try {
+      const userId = secureLocalStorage.getItem("id");
+      const response = await fetch("http://localhost:8000/unrsvp-event/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, event_id: eventId }),
+      });
+
+      if (response.ok) {
+        // Remove the event from the local state
+        window.location.reload();
+      } else {
+        console.error("Failed to un-RSVP");
+      }
+    } catch (error) {
+      console.error("Error during un-RSVP:", error);
+    }
+  };
+
+  const handleRemoveClub = async (clubId) => {
+    try {
+      const userId = secureLocalStorage.getItem("id");
+      const response = await fetch("http://localhost:8000/remove-club/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, club_id: clubId }),
+      });
+
+      if (response.ok) {
+        // Remove the club from the local state
+        window.location.reload();
+      } else {
+        console.error("Failed to remove club");
+      }
+    } catch (error) {
+      console.error("Error during remove club:", error);
+    }
+  };
   const onChange = (date) => {
     setValue(date);
   }
   useLayoutEffect(() => {
     setShowNavbar(true);
   }, [])
-  return (
-    <>
-    <div className='flex-container'>
-      <div className='sides'> 
-          <p id = "Events">Your Events</p>
-          {events.map((item) => (
-            <li
-              style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
-              key={item._id}
-            >
-              {item.eventname} {/* Adjusted to display the event name */}
-            </li>
-          ))}
+  if(secureLocalStorage.getItem('admin') == true){
+    return (
+      <>
+      <div className='flex-container'>
+        <div className='sides'> 
+            <p id = "Events">Your Events</p>
+            {events.map((item) => (
+              <li
+                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+                key={item._id}
+              >
+                {item.eventname} {/* Adjusted to display the event name */}
+              </li>
+            ))}
+        </div>
+        <div className='middle'>
+            <CalendarContainer>
+              <Calendar/>
+            </CalendarContainer>
+        </div>
+        <div className='sides'>
+            <p id = "Clubs">Your Club</p>
+            {clubs.map((item) => (
+              <li
+                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+                key={item._id}
+              >
+                {item.clubname} {/* Adjusted to display the event name */}
+              </li>
+            ))}
+        </div>
       </div>
-      <div className='middle'>
-          <CalendarContainer>
-            <Calendar/>
-          </CalendarContainer>
+      </>
+    );
+  }
+  else{
+    return (
+      <>
+      <div className='flex-container'>
+        <div className='sides'> 
+            <p id = "Events">Your Events</p>
+            {events.map((item) => (
+              <li
+                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+                key={item._id}
+              >
+                {item.eventname} {/* Adjusted to display the event name */}
+                <button className = "unrsvp-button"
+                  onClick={() => handleUnRSVP(item._id)}
+                >
+                  Un-RSVP
+                </button>
+              </li>
+            ))}
+        </div>
+        <div className='middle'>
+            <CalendarContainer>
+              <Calendar/>
+            </CalendarContainer>
+        </div>
+        <div className='sides'>
+            <p id = "Clubs">Your Clubs</p>
+            {clubs.map((item) => (
+              <li
+                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+                key={item._id}
+              >
+                {item.clubname} {/* Adjusted to display the event name */}
+                <button className="remove-club-button"
+                  onClick={() => handleRemoveClub(item._id)}
+                >
+                  Remove Club
+                </button>
+              </li>
+            ))}
+        </div>
       </div>
-      <div className='sides'>
-          <p id = "Clubs">Your Clubs</p>
-          {clubs.map((item) => (
-            <li
-              style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
-              key={item._id}
-            >
-              {item.clubname} {/* Adjusted to display the event name */}
-            </li>
-          ))}
-      </div>
-    </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default Dashboard;
