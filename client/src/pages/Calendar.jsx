@@ -6,100 +6,99 @@ import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import styled from 'styled-components';
 import "../pages/Dashboard.css";
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-
-
-function Calendars({setShowNavbar}) {
+function Calendars({ setShowNavbar }) {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  // Optional: Logout function that could clear session storage and redirect to login
+
   useLayoutEffect(() => {
     setShowNavbar(true);
-  }, [])
-  useEffect(()=>{
-    const fetchEvents = async (e) => {
-      try {
-        const userId = secureLocalStorage.getItem("id");
-        const response = await fetch("http://localhost:8000/get-events/", {
-            method: "GET",
-        });
-        const data = await response.json();
-        if(secureLocalStorage.getItem('admin') == true){
-          for (let i = 0; i < data.events.length; i++) {
-            if (data.events[i].clubname == secureLocalStorage.getItem('clubname')){
-              console.log(moment(data.events[i].date).format("MMMM Do YYYY, h:mm A"));
-            }
-            else{
-              let removed = data.events.splice(i,1);
-            }
-          }
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const userId = secureLocalStorage.getItem("id");
+      const response = await fetch("http://localhost:8000/get-events/", { method: "GET" });
+      const data = await response.json();
+
+      // Filter based on user or admin privileges
+      const filtered = data.events.filter((event) => {
+        if (secureLocalStorage.getItem('admin') === true) {
+          return event.clubname === secureLocalStorage.getItem('clubname');
+        } else {
+          return event.attending.includes(userId);
         }
-        else{
-          for (let i = 0; i < data.events.length; i++) {
-            if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) != -1){
-              console.log(moment(data.events[i].date).format("YYYY-MM-DD"));
-            }
-            else{
-              let removed = data.events.splice(i,1);
-            }
-          }
-        }
-        setEvents(data.events);
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
-    };
-    fetchEvents();
-  }, [])
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    // Format the date using moment.js
-    const formattedDate = moment(date).format("MMMM Do, YYYY"); // Example: "December 4th, 2024"
-    console.log(`Selected Date: ${formattedDate}`);
-    // Filter events by the selected date
-    const eventsForDate = new Array(events.length);
-    for (let i = 0; i < events.length; i++) {
-      console.log("loop");
-      if (moment(events[i].date).format("YYYY-MM-DD") == moment(date).format("YYYY-MM-DD")){
-        eventsForDate[i] = events[i];
-      }
-      else{
-        let removed = events.splice(i,1);
-      }
+      });
+
+      setEvents(filtered); // Update the state with the filtered events
+      setFilteredEvents(filtered); // Initialize filteredEvents
+    } catch (error) {
+      console.error('Error fetching events:', error);
     }
-    console.log(eventsForDate);
-    setFilteredEvents(eventsForDate);
-    console.log(events);
-    console.log(filteredEvents);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const handleDateChange = (date) => {
+    const datebox = document.getElementById('date');
+    const place = document.getElementById('dateplace')
+    if (datebox.style.display == 'none'){
+      place.style.display = 'none';
+      datebox.style.display = 'block';
+    }
+    setSelectedDate(date);
+
+    // Format the date using moment.js
+    const formattedDate = moment(date).format("YYYY-MM-DD");
+    console.log(`Selected Date: ${formattedDate}`);
+
+    // Filter events matching the selected date
+    const filteredByDate = events.filter((event) =>
+      moment(event.date).format("YYYY-MM-DD") === formattedDate
+    );
+
+    console.log("Filtered Events:", filteredByDate);
+    setFilteredEvents(filteredByDate);
   };
 
   return (
     <>
-      <div className='flex-container'>
-        <div className= "calendarleft" style={{height: "8 00px", color: "white", padding: "50px", overflow: "hidden"}}>
+      <div className="flex-container">
+        <div
+          className="calendarleft"
+          style={{ height: "800px", color: "white", padding: "50px", overflow: "hidden" }}
+        >
           <CalendarContainer>
-          <Calendar 
-          onChange={handleDateChange}
-          value={selectedDate}
-          />
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+            />
           </CalendarContainer>
         </div>
-        <div className='right'>
-        <h2>Events on {selectedDate.toDateString()}</h2>
-        {filteredEvents.length > 0 ? (
-          <ul>
-            {filteredEvents.map((event) => (
-              <li key={event._id} style={{ padding: "10px 0", fontSize: "18px" }}>
-                {event.eventname}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No events for this day.</p>
-        )}
+        <div className="right">
+          <h2 id = "dateplace">Events</h2>
+          <h2 id = "date" style={{display: 'none'}}>Events on {selectedDate.toDateString()}</h2>
+          {filteredEvents.length > 0 ? (
+            <ul style={{listStyleType: "none"}}>
+              {filteredEvents.map((event) => (
+                <li key={event._id} style={{fontSize: "18px", listStyleType: "none", margin: '0',
+                  padding: '0'}}>
+                  <div>
+                    <strong>{event.eventname}</strong>
+                  </div>
+                  <div style={{ fontSize: "0.9em", color: "gray" }}>
+                    {moment(event.date).format("MMMM Do YYYY, h:mm A")}
+                  </div> 
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No events for this day.</p>
+          )}
         </div>
       </div>
     </>
@@ -107,14 +106,13 @@ function Calendars({setShowNavbar}) {
 }
 
 export default Calendars;
+
 const CalendarContainer = styled.div`
-  /* ~~~ container styles ~~~ */
   max-width: 800px;
   margin: auto;
   background-color: #333;
   border-radius: 3px;
 
-  /* ~~~ navigation styles ~~~ */
   .react-calendar__navigation {
     display: flex;
 
@@ -127,12 +125,10 @@ const CalendarContainer = styled.div`
     }
   }
 
-  /* ~~~ label styles ~~~ */
   .react-calendar__month-view__weekdays {
     text-align: center;
   }
 
-  /* ~~~ button styles ~~~ */
   button {
     margin: 3px;
     background-color: #363;
@@ -150,11 +146,10 @@ const CalendarContainer = styled.div`
     }
   }
 
-  /* ~~~ day grid styles ~~~ */
   .react-calendar__month-view__days {
     display: grid !important;
-    grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%; 
-    
+    grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%;
+
     .react-calendar__tile {
       max-width: initial !important;
     }
@@ -164,7 +159,6 @@ const CalendarContainer = styled.div`
     }
   }
 
-  /* ~~~ neighboring month & weekend styles ~~~ */
   .react-calendar__month-view__days__day--neighboringMonth {
     opacity: 0.7;
   }
@@ -172,15 +166,16 @@ const CalendarContainer = styled.div`
     color: #dfdfdf;
   }
 
-  /* ~~~ other view styles ~~~ */
-  .react-calendar__year-view__months, .react-calendar__decade-view__years, .react-calendar__century-view__decades {
+  .react-calendar__year-view__months,
+  .react-calendar__decade-view__years,
+  .react-calendar__century-view__decades {
     display: grid !important;
     grid-template-columns: 20% 20% 20% 20% 20%;
 
     &.react-calendar__year-view__months {
       grid-template-columns: 33.3% 33.3% 33.3%;
     }
-    
+
     .react-calendar__tile {
       max-width: initial !important;
     }

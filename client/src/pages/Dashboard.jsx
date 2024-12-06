@@ -1,6 +1,7 @@
 import React from 'react';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
+import moment from "moment";
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../pages/Dashboard.css";
@@ -132,7 +133,12 @@ function Dashboard({setShowNavbar}) {
                 style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
                 key={item._id}
               >
-                {item.eventname} {/* Adjusted to display the event name */}
+                <div>
+                  <strong>{item.eventname}</strong>
+                </div>
+                <div style={{ fontSize: "0.9em", color: "gray" }}>
+                  {moment(item.date).format("MMMM Do YYYY, h:mm A")}
+                </div> {/* Adjusted to display the event name */}
               </li>
             ))}
         </div>
@@ -160,14 +166,19 @@ function Dashboard({setShowNavbar}) {
     return (
       <>
       <div className='flex-container'>
-        <div className='sides'> 
+        <div className='sides' style={{ overflowY: 'auto', }}> 
             <p id = "Events">Your Events</p>
             {events.map((item) => (
               <li
-                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0' }}
+                style={{ cursor: 'pointer', listStyle: 'none', margin: '0', padding: '0'}}
                 key={item._id}
               >
-                {item.eventname} {/* Adjusted to display the event name */}
+                <div>
+                  <strong>{item.eventname}</strong>
+                </div>
+                <div style={{ fontSize: "0.9em", color: "gray" }}>
+                  {moment(item.date).format("MMMM Do YYYY, h:mm A")}
+                </div> {/* Adjusted to display the event name */}
                 <button className = "unrsvp-button"
                   onClick={() => handleUnRSVP(item._id)}
                 >

@@ -5,6 +5,7 @@
 .sides{
     background-color: #333;
     width: 25%;
+    height: 800px;
     margin-top: 2px;
     text-align: center;
     line-height: 75px;
@@ -118,9 +119,6 @@
     transition: filter 300ms;
     height: auto;
     width: fit-content;
-}
-.clubeventlist{
-    
 }
 .unrsvp-button {
     background-color: rgb(255, 0, 0);

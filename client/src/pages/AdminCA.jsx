@@ -9,6 +9,7 @@ function AdminCA({setShowNavbar}) {
   const [club, setClub] = useState("");
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [desc, setDesc] = useState("");
   const navigate = useNavigate();
 
   // Set focus on email input when the component loads

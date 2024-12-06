@@ -18,7 +18,7 @@ function Club({setShowNavbar}){
             <>
             <div className='flex-container'>
             <div className='middle' style={{marginLeft: "auto", marginRight: "auto"}}>
-                Club Hub
+                Club Hub!
             </div>
             </div>
             </>
