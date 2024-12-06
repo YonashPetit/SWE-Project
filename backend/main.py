@@ -72,16 +72,17 @@ async def create_admin(request: Request):
     club = data.get("clubname")
     email = data.get("email")
     password = data.get("password")
+    desc = data.get("description")
     
 
-    if not email or not password or not club:
+    if not email or not password or not club or not desc:
         raise HTTPException(status_code=400, detail="Email, clubname, and password are required")
 
     existing_admin = admin_collection.find_one({"email": email})
     if existing_admin:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    admin_data = {"email": email, "clubname": club, "password": password}
+    admin_data = {"email": email, "clubname": club, "password": password, "description": desc}
     admin_collection.insert_one(admin_data)
 
     return {"message": "Admin created successfully"}
@@ -101,7 +102,8 @@ async def login_admin(request: Request):
     admin_data = {
         "id": str(admin["_id"]),
         "email": admin["email"],
-        "clubname": admin["clubname"]
+        "clubname": admin["clubname"],
+        "description": admin["description"]
     }
     return admin_data
 

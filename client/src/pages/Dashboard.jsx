@@ -32,6 +32,10 @@ function Dashboard({setShowNavbar}) {
       }
       else {
         for (let i = data.events.length - 1; i >= 0; i--) {
+          if (!data.events[i].attending){
+            let removed = data.events.splice(i, 1);
+            continue;
+          }
           if (data.events[i].attending.indexOf(secureLocalStorage.getItem('id')) !== -1) {
             
           } else {
@@ -61,6 +65,10 @@ function Dashboard({setShowNavbar}) {
       }
       else{
         for (let i = data.clubs.length - 1; i >= 0; i--) {
+          if (!data.clubs[i].member){
+            let removed = data.clubs.splice(i, 1);
+            continue;
+          }
           if (data.clubs[i].member.indexOf(secureLocalStorage.getItem('id')) !== -1) {
             
           } else {

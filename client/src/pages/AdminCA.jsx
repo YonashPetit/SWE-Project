@@ -41,6 +41,7 @@ function AdminCA({setShowNavbar}) {
         body: JSON.stringify({
           email,
           clubname: club,
+          description: desc, 
           password: pwd,
         }),
       });
@@ -87,6 +88,18 @@ function AdminCA({setShowNavbar}) {
               autoCapitalize="off"
               onChange={(e) => setClub(e.target.value)}
               value={club}
+              required
+            />
+          </div>
+          <label>Description:</label>
+          <div className="center">
+            <input
+              type="text"
+              name="desc"
+              ref={userRef}
+              autoCapitalize="off"
+              onChange={(e) => setDesc(e.target.value)}
+              value={desc}
               required
             />
           </div>

@@ -43,9 +43,6 @@ function Account({setShowNavbar}){
         <>
         <div className='flex-container'>
           <div className='middle' style={{marginLeft: "auto", marginRight: "auto"}}>
-              <h2 id='profile'>
-                Profile Pic 
-              </h2>
               <h2 id='id'>
                 ID Number:
               </h2>

@@ -36,7 +36,7 @@ function ClubList(props) {
     const button = document.getElementById("button");
 
     previewname.innerHTML = item.clubname; // Adjusted to match the backend field
-    previewdesc.innerHTML = item._id;
+    previewdesc.innerHTML = item.description;
     button.style.display = "block";
     secureLocalStorage.setItem("curclub", item._id)
   };

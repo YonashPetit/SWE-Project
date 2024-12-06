@@ -42,6 +42,7 @@ function AdminLogin({setShowNavbar}) {
         secureLocalStorage.setItem("id", data.id);
         secureLocalStorage.setItem("email", data.email);
         secureLocalStorage.setItem("clubname", data.clubname);
+        secureLocalStorage.setItem("desc", data.description);
         secureLocalStorage.setItem("pwd", pwd);
         secureLocalStorage.setItem("admin", true);
         secureLocalStorage.setItem("loggedin", true);
